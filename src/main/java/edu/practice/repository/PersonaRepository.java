@@ -14,5 +14,5 @@ public interface PersonaRepository extends JpaRepository<PersonaEntity,Integer>{
     @Query(value = "SELECT * FROM persona", nativeQuery = true)
     public List<PersonaEntity> listarPersona();
 
-    
+
 }

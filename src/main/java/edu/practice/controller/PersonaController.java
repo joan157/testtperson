@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import edu.practice.entity.PersonaEntity;
 import edu.practice.repository.PersonaRepository;
@@ -28,6 +25,48 @@ public class PersonaController {
     @GetMapping
     public List<PersonaEntity> listarPersona(){
         return personaService.listarPersona();
+    }
+
+    //http://localhost:8081/api/v1/persona/edades?edadMenor=15&edadMayor=22
+    @GetMapping("/edades")
+    public List<PersonaEntity> listarangoedades(@RequestParam Integer edadMenor, @RequestParam Integer edadMayor){
+        return personaService.listarEntreRangeEdades(edadMenor, edadMayor);
+    }
+    @GetMapping("/solonames")
+    public List<String> listaSoloNames(){
+        return personaService.listaSoloNames();
+    }
+    @GetMapping("/sumatoria")
+    public Integer sumatoria(){
+        return personaService.sumatorioEdades();
+    }
+    @GetMapping("/sumatoriaJson")
+    public Map<String, Integer> sumatoriaJson(){
+        Map<String,Integer> valor = new HashMap<>();
+        valor.put("Sumatoria",personaService.sumatorioEdades());
+        return valor;
+    }
+    @GetMapping("/promedioedades")
+    public Object promedioedades(){
+        Map<String,Double> valor = new HashMap<>();
+        valor.put("Promedio",personaService.promedioEdades());
+        return valor;
+    }
+
+    @GetMapping("/losmenores")
+    public List<PersonaEntity> listarsolomenores(){
+        return personaService.listarMasJoven();
+    }
+
+    @GetMapping("/{idpersona}")
+    public PersonaEntity obtenerPersona(@PathVariable Integer idpersona){
+        return personaService.obtenerPersona(idpersona);
+    }
+    //http://localhost:8081/api/v1/persona/namebuscar?namess=joan
+    @GetMapping("/namebuscar")
+    public List<PersonaEntity> personasxNombres(@RequestParam String namess){
+        System.out.println("Nombre recibido: " + namess); // VERIFICA QUÉ LLEGA
+        return personaService.litsarxNombre(namess);
     }
 
     @GetMapping("/pares")
